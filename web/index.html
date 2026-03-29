@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mint-Energie — Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -240,6 +241,14 @@
 
         .data-table tbody tr:nth-child(even) {
             background: rgba(36, 52, 66, 0.28);
+        }
+
+        .data-table tbody tr.heating-change td {
+            border-top: 2px solid var(--orange);
+        }
+        .data-table tbody tr.heating-change td:first-child::before {
+            content: '\1F525';
+            margin-right: 4px;
         }
 
         /* Error */

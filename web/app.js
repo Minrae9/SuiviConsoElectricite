@@ -22,6 +22,38 @@ const YEAR_COLORS = [
     { bar: "rgba(171, 71, 188, 0.7)", line: "#ab47bc" },    // 2027 - violet
 ];
 
+// Changement de chauffage : novembre 2025
+const HEATING_CHANGE_MONTH = "2025-11";
+const HEATING_CHANGE_LABEL = "Nouveau chauffage";
+
+// Annotation verticale pour les graphiques mensuels (index Nov = 10)
+function heatingAnnotation() {
+    return {
+        annotation: {
+            annotations: {
+                heatingLine: {
+                    type: 'line',
+                    xMin: 10,
+                    xMax: 10,
+                    borderColor: '#ffb74d',
+                    borderWidth: 2,
+                    borderDash: [6, 4],
+                    label: {
+                        display: true,
+                        content: '\uD83D\uDD25 Nv. chauffage',
+                        position: 'start',
+                        backgroundColor: 'rgba(255, 183, 77, 0.85)',
+                        color: '#1a1a1a',
+                        font: { size: 9, weight: 'bold' },
+                        padding: { top: 2, bottom: 2, left: 4, right: 4 },
+                        borderRadius: 3,
+                    }
+                }
+            }
+        }
+    };
+}
+
 // ============================================================
 // Chargement
 // ============================================================
@@ -236,10 +268,12 @@ function renderMonthlyTable() {
     body.innerHTML = rows.map(m => {
         const amount = m.montant_euros == null ? "—" : fmt2(m.montant_euros);
         const unitPrice = m.prix_kwh == null ? "—" : m.prix_kwh.toLocaleString("fr-FR", { minimumFractionDigits: 4, maximumFractionDigits: 4 });
+        const isHeatingChange = m.billing_month === HEATING_CHANGE_MONTH;
+        const rowClass = isHeatingChange ? ' class="heating-change"' : '';
         return `
-            <tr>
-                <td>${m.label || m.billing_month || "—"}</td>
-                <td>${m.period_label || "—"}</td>
+            <tr${rowClass}>
+                <td>${m.label || m.billing_month || "\u2014"}</td>
+                <td>${m.period_label || "\u2014"}</td>
                 <td>${fmt(m.total_kwh)}</td>
                 <td>${fmt(m.hp_kwh)}</td>
                 <td>${fmt(m.hc_kwh)}</td>
@@ -274,6 +308,7 @@ function renderConsoMonths() {
     opts.plugins.tooltip.callbacks = {
         label: ctx => ` ${ctx.dataset.label}: ${fmt(ctx.parsed.y)} kWh`,
     };
+    Object.assign(opts.plugins, heatingAnnotation());
 
     new Chart(document.getElementById("chart-conso-months"), {
         type: "bar",
@@ -303,8 +338,7 @@ function renderPrixMonths() {
     opts.scales.y.ticks.callback = v => `${v} €`;
     opts.plugins.tooltip.callbacks = {
         label: ctx => ` ${ctx.dataset.label}: ${fmt2(ctx.parsed.y)} €`,
-    };
-
+    };    Object.assign(opts.plugins, heatingAnnotation());
     new Chart(document.getElementById("chart-prix-months"), {
         type: "bar",
         data: { labels: MONTH_NAMES, datasets },
@@ -376,6 +410,7 @@ function renderPctMonths() {
     opts.plugins.tooltip.callbacks = {
         label: ctx => ` ${ctx.dataset.label}: ${formatVariationLabel(ctx.parsed.y)}`,
     };
+    Object.assign(opts.plugins, heatingAnnotation());
 
     new Chart(document.getElementById("chart-pct-months"), {
         type: "line",
