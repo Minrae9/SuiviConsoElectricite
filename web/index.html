@@ -56,40 +56,74 @@
 
 
 
-        /* KPI strip */
+        /* KPI strip — une ligne par année */
         .kpi-strip {
             display: flex;
+            flex-direction: column;
             gap: 1px;
             background: var(--border);
             border-bottom: 1px solid var(--border);
-            height: 62px;
+        }
+
+        .kpi-row {
+            display: flex;
+            gap: 1px;
+            background: var(--border);
+            height: 38px;
+        }
+
+        .kpi-row-header {
+            display: none;
+        }
+
+        .kpi-header-row {
+            display: flex;
+            gap: 1px;
+            background: var(--surface2);
+            height: 22px;
+        }
+
+        .kpi-header-cell {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: var(--surface2);
+        }
+
+        .kpi-header-cell.year-cell {
+            flex: 0 0 72px;
         }
 
         .kpi {
             flex: 1;
             background: var(--surface);
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 4px 8px;
+            gap: 4px;
+            padding: 2px 6px;
         }
 
-        .kpi-label {
-            font-size: 10px;
-            color: var(--text-dim);
-            text-transform: uppercase;
+        .kpi.year-cell {
+            flex: 0 0 72px;
+            font-weight: 700;
+            font-size: 14px;
             letter-spacing: 0.5px;
         }
 
         .kpi-val {
-            font-size: 20px;
+            font-size: 15px;
             font-weight: 700;
-            line-height: 1.2;
+            line-height: 1;
         }
 
         .kpi-sub {
-            font-size: 10px;
+            font-size: 9px;
             color: var(--text-dim);
         }
 
@@ -97,6 +131,18 @@
         .kpi-val.green { color: var(--green); }
         .kpi-val.orange { color: var(--orange); }
         .kpi-val.purple { color: var(--purple); }
+        .kpi-val.red { color: var(--red); }
+        .kpi-val.cyan { color: var(--cyan); }
+
+        .kpi-variation {
+            font-size: 9px;
+            font-weight: 600;
+            padding: 1px 4px;
+            border-radius: 3px;
+        }
+        .kpi-variation.up { color: var(--red); }
+        .kpi-variation.down { color: var(--green); }
+        .kpi-variation.neutral { color: var(--text-dim); }
 
         /* Charts grid */
         .charts-grid {
@@ -105,7 +151,7 @@
             grid-template-rows: 1fr 1fr;
             gap: 1px;
             background: var(--border);
-            height: calc(100vh - 48px - 62px);
+            height: calc(100vh - 48px - var(--kpi-height, 100px));
         }
 
         .chart-panel {
@@ -216,37 +262,8 @@
         <strong>Erreur :</strong> <span id="error-message"></span>
     </div>
 
-    <div class="kpi-strip">
-        <div class="kpi">
-            <div class="kpi-label">Conso totale</div>
-            <div class="kpi-val accent" id="kpi-total">—</div>
-            <div class="kpi-sub">kWh</div>
-        </div>
-        <div class="kpi">
-            <div class="kpi-label">HP / HC</div>
-            <div class="kpi-val" id="kpi-hp-hc" style="font-size:16px">—</div>
-            <div class="kpi-sub" id="kpi-hp-hc-pct"></div>
-        </div>
-        <div class="kpi">
-            <div class="kpi-label">Total factures</div>
-            <div class="kpi-val purple" id="kpi-factures">—</div>
-            <div class="kpi-sub">euros</div>
-        </div>
-        <div class="kpi">
-            <div class="kpi-label">Prix moyen</div>
-            <div class="kpi-val orange" id="kpi-prix">—</div>
-            <div class="kpi-sub">ct/kWh</div>
-        </div>
-        <div class="kpi">
-            <div class="kpi-label">Moy. mensuelle</div>
-            <div class="kpi-val green" id="kpi-avg">—</div>
-            <div class="kpi-sub">kWh/mois</div>
-        </div>
-        <div class="kpi">
-            <div class="kpi-label">Periode</div>
-            <div class="kpi-val" id="kpi-period" style="font-size:13px">—</div>
-            <div class="kpi-sub" id="kpi-nb-months"></div>
-        </div>
+    <div class="kpi-strip" id="kpi-strip">
+        <!-- Généré dynamiquement par renderKPIs() -->
     </div>
 
     <div class="charts-grid">

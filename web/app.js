@@ -148,23 +148,79 @@ function chartDefaults() {
 
 function renderKPIs() {
     const s = appData.summary;
-    document.getElementById("kpi-total").textContent = fmt(s.total_kwh);
-    document.getElementById("kpi-hp-hc").innerHTML =
-        `<span style="color:#ef5350">${fmt(s.hp_kwh)}</span> / <span style="color:#26c6da">${fmt(s.hc_kwh)}</span>`;
-    document.getElementById("kpi-hp-hc-pct").textContent =
-        `HP ${s.hp_ratio}% | HC ${s.hc_ratio}%`;
-    document.getElementById("kpi-factures").textContent =
-        s.total_factures_euros ? fmt2(s.total_factures_euros) : "—";
-    document.getElementById("kpi-prix").textContent =
-        s.avg_prix_kwh ? fmt2(s.avg_prix_kwh * 100) : "—";
-    document.getElementById("kpi-avg").textContent = fmt(s.avg_monthly_kwh);
-    document.getElementById("kpi-nb-months").textContent = `${s.nb_months} mois`;
+    const yearly = s.yearly_comparison || [];
+    const strip = document.getElementById("kpi-strip");
 
-    if (s.date_debut && s.date_fin) {
-        const fmtD = d => d.split("-").reverse().join("/");
-        document.getElementById("kpi-period").textContent =
-            `${fmtD(s.date_debut)} — ${fmtD(s.date_fin)}`;
-    }
+    // Calculer les stats par année depuis les données mensuelles
+    const yearStats = {};
+    (appData.monthly || []).forEach(m => {
+        const y = m.billing_month.split("-")[0];
+        if (!yearStats[y]) yearStats[y] = { total: 0, hp: 0, hc: 0, factures: 0, nbMois: 0, nbFactures: 0 };
+        yearStats[y].total += m.total_kwh || 0;
+        yearStats[y].hp += m.hp_kwh || 0;
+        yearStats[y].hc += m.hc_kwh || 0;
+        if (m.montant_euros != null) {
+            yearStats[y].factures += m.montant_euros;
+            yearStats[y].nbFactures++;
+        }
+        yearStats[y].nbMois++;
+    });
+
+    const years = Object.keys(yearStats).sort();
+    const yearColors = ["accent", "green", "orange", "purple"];
+
+    // En-tête
+    let html = `<div class="kpi-header-row">
+        <div class="kpi-header-cell year-cell">Année</div>
+        <div class="kpi-header-cell">Conso</div>
+        <div class="kpi-header-cell">HP</div>
+        <div class="kpi-header-cell">HC</div>
+        <div class="kpi-header-cell">HP/HC %</div>
+        <div class="kpi-header-cell">Factures</div>
+        <div class="kpi-header-cell">Prix moy.</div>
+        <div class="kpi-header-cell">Moy/mois</div>
+        <div class="kpi-header-cell">Mois</div>
+    </div>`;
+
+    // Lignes par année
+    years.forEach((y, i) => {
+        const st = yearStats[y];
+        const colorClass = yearColors[i % yearColors.length];
+        const hcRatio = st.total > 0 ? ((st.hc / st.total) * 100).toFixed(1) : "—";
+        const hpRatio = st.total > 0 ? ((st.hp / st.total) * 100).toFixed(1) : "—";
+        const prixMoy = st.total > 0 && st.factures > 0 ? ((st.factures / st.total) * 100).toFixed(2) : "—";
+        const moyMois = st.nbMois > 0 ? fmt(Math.round(st.total / st.nbMois)) : "—";
+
+        // Variation vs année précédente
+        let variationHtml = "";
+        if (i > 0) {
+            const prev = yearStats[years[i - 1]];
+            if (prev && prev.total > 0) {
+                const pct = ((st.total - prev.total) / prev.total * 100).toFixed(1);
+                const cls = pct > 0 ? "up" : pct < 0 ? "down" : "neutral";
+                const sign = pct > 0 ? "+" : "";
+                variationHtml = `<span class="kpi-variation ${cls}">${sign}${pct}%</span>`;
+            }
+        }
+
+        html += `<div class="kpi-row">
+            <div class="kpi year-cell" style="color:var(--${colorClass})">${y}</div>
+            <div class="kpi"><span class="kpi-val ${colorClass}">${fmt(st.total)}</span><span class="kpi-sub">kWh</span>${variationHtml}</div>
+            <div class="kpi"><span class="kpi-val red">${fmt(st.hp)}</span><span class="kpi-sub">kWh</span></div>
+            <div class="kpi"><span class="kpi-val cyan">${fmt(st.hc)}</span><span class="kpi-sub">kWh</span></div>
+            <div class="kpi"><span class="kpi-val" style="font-size:12px">${hpRatio}/<span style="color:var(--cyan)">${hcRatio}</span></span></div>
+            <div class="kpi"><span class="kpi-val purple">${fmt2(st.factures)}</span><span class="kpi-sub">€</span></div>
+            <div class="kpi"><span class="kpi-val orange">${prixMoy}</span><span class="kpi-sub">ct/kWh</span></div>
+            <div class="kpi"><span class="kpi-val green">${moyMois}</span><span class="kpi-sub">kWh</span></div>
+            <div class="kpi"><span class="kpi-val" style="font-size:13px">${st.nbMois}</span><span class="kpi-sub">mois</span></div>
+        </div>`;
+    });
+
+    strip.innerHTML = html;
+
+    // Ajuster la hauteur du grid en fonction du nombre d'années
+    const kpiHeight = 22 + (years.length * 39);
+    document.documentElement.style.setProperty("--kpi-height", kpiHeight + "px");
 }
 
 function renderMonthlyTable() {
