@@ -1,0 +1,21 @@
+# Identifiants - NE JAMAIS COMMITER
+config/.env
+
+# Données locales
+data/*.json
+!data/conso_processed.json
+data/*.csv
+data/*.html
+data/*.log
+data/*.png
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store

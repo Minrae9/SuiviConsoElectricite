@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mint-Energie — Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #090f15;
+            --surface: #121b24;
+            --surface2: #182430;
+            --border: #253646;
+            --text: #edf3f8;
+            --text-dim: #9aaec0;
+            --accent: #5cc8ff;
+            --green: #72c277;
+            --orange: #ffb74d;
+            --purple: #b67cd2;
+            --red: #ef5350;
+            --cyan: #35cfe2;
+        }
+
+        html, body {
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: radial-gradient(circle at 12% 8%, #132130 0%, var(--bg) 48%, #070c12 100%);
+            color: var(--text);
+        }
+
+        /* Top bar */
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 20px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            height: 48px;
+        }
+
+        .topbar h1 {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: 0.5px;
+        }
+
+        .topbar .update {
+            font-size: 11px;
+            color: var(--text-dim);
+        }
+
+
+
+        /* KPI strip */
+        .kpi-strip {
+            display: flex;
+            gap: 1px;
+            background: var(--border);
+            border-bottom: 1px solid var(--border);
+            height: 62px;
+        }
+
+        .kpi {
+            flex: 1;
+            background: var(--surface);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4px 8px;
+        }
+
+        .kpi-label {
+            font-size: 10px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .kpi-val {
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .kpi-sub {
+            font-size: 10px;
+            color: var(--text-dim);
+        }
+
+        .kpi-val.accent { color: var(--accent); }
+        .kpi-val.green { color: var(--green); }
+        .kpi-val.orange { color: var(--orange); }
+        .kpi-val.purple { color: var(--purple); }
+
+        /* Charts grid */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 1px;
+            background: var(--border);
+            height: calc(100vh - 48px - 62px);
+        }
+
+        .chart-panel {
+            background: var(--surface);
+            padding: 10px 14px 8px;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        .chart-panel h2 {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            flex-shrink: 0;
+        }
+
+        .chart-wrap {
+            flex: 1;
+            position: relative;
+            min-height: 0;
+        }
+
+        .chart-wrap canvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* Table view */
+        .table-view {
+            padding: 10px;
+            background: var(--bg);
+        }
+
+        .table-panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .table-panel h2 {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .table-wrap {
+            flex: 1;
+            overflow: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .data-table thead th {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            background: var(--surface2);
+            color: var(--text);
+            text-align: left;
+            padding: 9px 10px;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        .data-table tbody td {
+            padding: 8px 10px;
+            border-bottom: 1px solid rgba(45, 64, 80, 0.45);
+            color: #d6e0ea;
+            white-space: nowrap;
+        }
+
+        .data-table tbody tr:nth-child(even) {
+            background: rgba(36, 52, 66, 0.28);
+        }
+
+        /* Error */
+        .error-banner {
+            background: var(--red);
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 13px;
+        }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <h1>MINT-ENERGIE — TABLEAU DE BORD</h1>
+        <span class="update" id="last-update"></span>
+    </div>
+
+    <div id="error-banner" class="error-banner hidden">
+        <strong>Erreur :</strong> <span id="error-message"></span>
+    </div>
+
+    <div class="kpi-strip">
+        <div class="kpi">
+            <div class="kpi-label">Conso totale</div>
+            <div class="kpi-val accent" id="kpi-total">—</div>
+            <div class="kpi-sub">kWh</div>
+        </div>
+        <div class="kpi">
+            <div class="kpi-label">HP / HC</div>
+            <div class="kpi-val" id="kpi-hp-hc" style="font-size:16px">—</div>
+            <div class="kpi-sub" id="kpi-hp-hc-pct"></div>
+        </div>
+        <div class="kpi">
+            <div class="kpi-label">Total factures</div>
+            <div class="kpi-val purple" id="kpi-factures">—</div>
+            <div class="kpi-sub">euros</div>
+        </div>
+        <div class="kpi">
+            <div class="kpi-label">Prix moyen</div>
+            <div class="kpi-val orange" id="kpi-prix">—</div>
+            <div class="kpi-sub">ct/kWh</div>
+        </div>
+        <div class="kpi">
+            <div class="kpi-label">Moy. mensuelle</div>
+            <div class="kpi-val green" id="kpi-avg">—</div>
+            <div class="kpi-sub">kWh/mois</div>
+        </div>
+        <div class="kpi">
+            <div class="kpi-label">Periode</div>
+            <div class="kpi-val" id="kpi-period" style="font-size:13px">—</div>
+            <div class="kpi-sub" id="kpi-nb-months"></div>
+        </div>
+    </div>
+
+    <div class="charts-grid">
+        <div class="chart-panel">
+            <h2>Comparaison conso mensuelle par annee (kWh)</h2>
+            <div class="chart-wrap"><canvas id="chart-conso-months"></canvas></div>
+        </div>
+        <div class="chart-panel">
+            <h2>Comparaison prix mensuel par annee (euros)</h2>
+            <div class="chart-wrap"><canvas id="chart-prix-months"></canvas></div>
+        </div>
+        <div class="chart-panel">
+            <h2>Variation mensuelle vs annee precedente (conso & prix)</h2>
+            <div class="chart-wrap"><canvas id="chart-pct-months"></canvas></div>
+        </div>
+        <div class="chart-panel">
+            <h2>Variation annuelle vs annee precedente (conso & prix)</h2>
+            <div class="chart-wrap"><canvas id="chart-yearly"></canvas></div>
+        </div>
+    </div>
+
+    <div id="table-view" class="table-view">
+        <div class="table-panel">
+            <h2>Donnees mensuelles detaillees</h2>
+            <div class="table-wrap">
+                <table class="data-table" id="monthly-data-table">
+                    <thead>
+                        <tr>
+                            <th>Mois</th>
+                            <th>Periode</th>
+                            <th>Total (kWh)</th>
+                            <th>HP (kWh)</th>
+                            <th>HC (kWh)</th>
+                            <th>HP (%)</th>
+                            <th>HC (%)</th>
+                            <th>Montant (euro)</th>
+                            <th>Prix (€/kWh)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="monthly-data-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>document.write('<scr'+'ipt src="app.js?v='+Date.now()+'"><\/scr'+'ipt>');</script>
+</body>
+</html>
