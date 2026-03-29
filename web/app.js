@@ -177,7 +177,7 @@ function renderKPIs() {
         <div class="kpi-header-cell">HC</div>
         <div class="kpi-header-cell">HP/HC %</div>
         <div class="kpi-header-cell">Factures</div>
-        <div class="kpi-header-cell">Prix moy.</div>
+        <div class="kpi-header-cell">€/kWh</div>
         <div class="kpi-header-cell">Moy/mois</div>
         <div class="kpi-header-cell">Mois</div>
     </div>`;
@@ -188,7 +188,7 @@ function renderKPIs() {
         const colorClass = yearColors[i % yearColors.length];
         const hcRatio = st.total > 0 ? ((st.hc / st.total) * 100).toFixed(1) : "—";
         const hpRatio = st.total > 0 ? ((st.hp / st.total) * 100).toFixed(1) : "—";
-        const prixMoy = st.total > 0 && st.factures > 0 ? ((st.factures / st.total) * 100).toFixed(2) : "—";
+        const prixMoy = st.total > 0 && st.factures > 0 ? (st.factures / st.total).toFixed(4) : "—";
         const moyMois = st.nbMois > 0 ? fmt(Math.round(st.total / st.nbMois)) : "—";
 
         // Variation vs année précédente
@@ -210,7 +210,7 @@ function renderKPIs() {
             <div class="kpi"><span class="kpi-val cyan">${fmt(st.hc)}</span><span class="kpi-sub">kWh</span></div>
             <div class="kpi"><span class="kpi-val" style="font-size:12px">${hpRatio}/<span style="color:var(--cyan)">${hcRatio}</span></span></div>
             <div class="kpi"><span class="kpi-val purple">${fmt2(st.factures)}</span><span class="kpi-sub">€</span></div>
-            <div class="kpi"><span class="kpi-val orange">${prixMoy}</span><span class="kpi-sub">ct/kWh</span></div>
+            <div class="kpi"><span class="kpi-val orange">${prixMoy}</span><span class="kpi-sub">€/kWh</span></div>
             <div class="kpi"><span class="kpi-val green">${moyMois}</span><span class="kpi-sub">kWh</span></div>
             <div class="kpi"><span class="kpi-val" style="font-size:13px">${st.nbMois}</span><span class="kpi-sub">mois</span></div>
         </div>`;
