@@ -1,18 +1,18 @@
 {
-  "generated_at": "2026-04-13 21:37:15",
+  "generated_at": "2026-04-18 22:11:09",
   "billing_rule": "Mois comptable : du 12 au 11. Periodes fournies directement par Mint-Energie.",
   "has_hc_hp": true,
   "data_source": "mint-energie-scraper",
   "summary": {
-    "total_kwh": 16101.0,
-    "hp_kwh": 11154.0,
-    "hc_kwh": 4947.0,
+    "total_kwh": 16586.0,
+    "hp_kwh": 11486.0,
+    "hc_kwh": 5100.0,
     "hc_ratio": 30.7,
     "hp_ratio": 69.3,
-    "avg_monthly_kwh": 619.27,
-    "nb_months": 26,
+    "avg_monthly_kwh": 614.3,
+    "nb_months": 27,
     "date_debut": "2024-01-12",
-    "date_fin": "2026-03-11",
+    "date_fin": "2026-04-11",
     "top3_months": [
       {
         "label": "Janvier 2025",
@@ -48,14 +48,14 @@
       },
       {
         "year": "2026",
-        "total_kwh": 1091.0,
-        "hp_kwh": 720.0,
-        "hc_kwh": 371.0
+        "total_kwh": 1576.0,
+        "hp_kwh": 1052.0,
+        "hc_kwh": 524.0
       }
     ],
     "total_factures_euros": 4350.61,
     "nb_factures": 26,
-    "avg_prix_kwh": 0.2702
+    "avg_prix_kwh": 0.2623
   },
   "monthly": [
     {
@@ -525,6 +525,24 @@
       "nb_jours": 28,
       "montant_euros": 113.48,
       "prix_kwh": 0.2394
+    },
+    {
+      "billing_month": "2026-03",
+      "label": "Mars 2026",
+      "period_start": "2026-03-12",
+      "period_end": "2026-04-11",
+      "period_label": "du 12/03/26 au 11/04/26",
+      "total_kwh": 485.0,
+      "hp_kwh": 332.0,
+      "hc_kwh": 153.0,
+      "avg_daily_kwh": 15.65,
+      "min_daily_kwh": 15.65,
+      "max_daily_kwh": 15.65,
+      "hc_ratio": 31.5,
+      "hp_ratio": 68.5,
+      "nb_jours": 31,
+      "montant_euros": null,
+      "prix_kwh": null
     }
   ],
   "daily": [
@@ -6057,6 +6075,223 @@
       "hp_kwh": 10.89,
       "hc_kwh": 6.04,
       "billing_month": "2026-02"
+    },
+    {
+      "date": "2026-03-12",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-03-13",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-03-14",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-03-15",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-03-16",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-03-17",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-03-18",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-03-19",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-03-20",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-03-21",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-03-22",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-03-23",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-03-24",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-03-25",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-03-26",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-03-27",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-03-28",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-03-29",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-03-30",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-03-31",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-04-01",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-04-02",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-04-03",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-04-04",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-04-05",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-04-06",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-04-07",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-04-08",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-04-09",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-04-10",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
+    },
+    {
+      "date": "2026-04-11",
+      "consommation_kwh": 15.65,
+      "hp_kwh": 10.71,
+      "hc_kwh": 4.94,
+      "billing_month": "2026-03"
     }
   ]
 }
