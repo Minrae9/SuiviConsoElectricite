@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-22 21:44:46",
+  "generated_at": "2026-04-23 22:17:47",
   "billing_rule": "Mois comptable : du 12 au 11. Periodes fournies directement par Mint-Energie.",
   "has_hc_hp": true,
   "data_source": "mint-energie-scraper",
@@ -53,9 +53,9 @@
         "hc_kwh": 524.0
       }
     ],
-    "total_factures_euros": 4350.61,
-    "nb_factures": 26,
-    "avg_prix_kwh": 0.2623
+    "total_factures_euros": 4469.24,
+    "nb_factures": 27,
+    "avg_prix_kwh": 0.2695
   },
   "monthly": [
     {
@@ -541,8 +541,8 @@
       "hc_ratio": 31.5,
       "hp_ratio": 68.5,
       "nb_jours": 31,
-      "montant_euros": null,
-      "prix_kwh": null
+      "montant_euros": 118.63,
+      "prix_kwh": 0.2446
     }
   ],
   "daily": [
